@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requisições</title>
+
+    <!-- JS -->
+    <script>
+        // Vetor
+        let vetor = [];
+
+        // Requisição para obter todos os registros da API
+        function obterRegistros(){
+
+            // Requisição
+            fetch('http://localhost:8080')
+            .then(retorno => retorno.json())
+            .then((retorno_convertido) => {
+                // Limpar vetor
+                vetor = [];
+
+                // Atualizar vetor
+                vetor = retorno_convertido;
+            })
+            .then(() => {
+                // Obter tabela
+                let tabela = document.getElementById('tabela');
+
+                // Limpar tabela
+                tabela.innerHTML = '';
+                
+                for(let indice = 0; indice < vetor.length; indice++){
+
+                    // Criar linha
+                    let linha = tabela.insertRow(-1);
+
+                    // Criar colunas
+                    let coluna1 = linha.insertCell(0);
+                    let coluna2 = linha.insertCell(1);
+
+                    // Adicionar valores
+                    coluna1.innerText = vetor[indice].nome;
+                    coluna2.innerText = vetor[indice].idade;
+                }
+
+            })
+
+        }
+
+        // Função para cadastrar pessoas na API
+        function cadastrar(){
+
+            // Obter os inputs
+            let nome = document.getElementById("nome").value;
+            let idade = document.getElementById("idade").value;
+
+            // Criar objeto
+            let pessoa = {
+                "nome":nome,
+                "idade":idade
+            }
+
+            // Requisição
+            fetch('http://localhost:8080', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(pessoa)})
+            .then(retorno => retorno.json())
+            .then(retorno_convertido => vetor.push(retorno_convertido))
+            .then(() => {obterRegistros()})
+
+        }
+
+        // Executar a função para obter os registros
+        obterRegistros();
+
+    </script>
+</head>
+<body>
+
+    <!-- Formulário -->
+    <form>
+        <input type="text" id="nome" placeholder="Nome">
+        <input type="text" id="idade" placeholder="Idade">
+        <input type="button" value="Cadastrar" onclick="cadastrar()">
+    </form>
+    
+    <!-- Tabela -->
+    <table border="1" id="tabela"></table>
+</body>
+</html>

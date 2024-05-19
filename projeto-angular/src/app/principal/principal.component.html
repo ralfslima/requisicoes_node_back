@@ -1,0 +1,23 @@
+<!-- Formulário -->
+<form>
+    <input type="text" [(ngModel)]="nome" name="nome" placeholder="Nome">
+    <input type="text" [(ngModel)]="idade" name="idade" placeholder="Idade">
+    <button type="button" (click)="cadastrar()">Cadastrar</button>
+  </form>
+  
+  <!-- Tabela -->
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Idade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let registro of registros">
+        <td>{{ registro.nome }}</td>
+        <td>{{ registro.idade }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
